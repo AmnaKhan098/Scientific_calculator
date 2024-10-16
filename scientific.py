@@ -8,11 +8,15 @@ st.title("Scientific Calculator")
 operation = st.selectbox("Select Operation:", 
                           ["Addition", "Subtraction", "Multiplication", 
                            "Division", "Square", "Square Root", 
-                           "Cosine", "Sine", "Tangent", "Algorithm"])
+                           "Cosine", "Sine", "Tangent", "Factorial"])
 
 # Input fields for values
 value1 = st.number_input("Enter first value:", value=0.0)
-value2 = st.number_input("Enter second value (only for binary operations):", value=0.0)
+# Only show the second input field for binary operations
+if operation in ["Addition", "Subtraction", "Multiplication", "Division"]:
+    value2 = st.number_input("Enter second value:", value=0.0)
+else:
+    value2 = None  # No second input for unary operations
 
 # Button to calculate
 if st.button("Calculate", key="calculate", use_container_width=True):
@@ -35,9 +39,11 @@ if st.button("Calculate", key="calculate", use_container_width=True):
         result = math.sin(math.radians(value1))
     elif operation == "Tangent":
         result = math.tan(math.radians(value1))
-    elif operation == "Algorithm":
-        # Placeholder for algorithmic calculation
-        result = "Algorithm applied (functionality to be defined)."
+    elif operation == "Factorial":
+        if value1 >= 0 and value1 == int(value1):
+            result = math.factorial(int(value1))
+        else:
+            result = "Error: Factorial only defined for non-negative integers."
 
     st.success(f"Result: {result}")
 
@@ -53,6 +59,7 @@ div.stButton > button {
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 
 
