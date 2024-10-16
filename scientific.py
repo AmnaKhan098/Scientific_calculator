@@ -1,25 +1,25 @@
 import streamlit as st
 import math
 
-# Set up the interface
-st.title("Scientific Calculator")
-st.write("Select an operation and enter values to perform a calculation.")
+st.title("Interactive Scientific Calculator")
+st.write("Choose your desired operation, input values, and select an algorithm to perform calculations.")
 
-# Dropdown for operations
-operation = st.selectbox("Choose an operation", 
-                         ("Addition", "Subtraction", "Multiplication", "Division", 
-                          "Square Root", "Power", "Sine", "Cosine", "Tangent"))
+# Dropdown for selecting an operation
+operation = st.selectbox("Select an Operation:", ("Addition", "Subtraction", "Multiplication", "Division", "Power", "Square Root"))
 
-# Input fields
-num1 = st.number_input("Enter first value", step=0.1, format="%.2f")
-num2 = None  # Only used for two-operand operations
+# Dropdown for selecting an algorithm type (simple demonstration for different choices)
+algorithm = st.selectbox("Select Algorithm:", ("Standard Calculation", "Algorithm X", "Algorithm Y"))
 
+# Inputs for numbers based on the operation
 if operation in ["Addition", "Subtraction", "Multiplication", "Division", "Power"]:
-    num2 = st.number_input("Enter second value", step=0.1, format="%.2f")
+    num1 = st.number_input("Enter First Value:", value=0.0)
+    num2 = st.number_input("Enter Second Value:", value=0.0)
+else:  # Square root only requires one input
+    num1 = st.number_input("Enter Value:", value=0.0)
 
-# Calculate button
+# Perform calculation on button click
 if st.button("Calculate"):
-    try:
+    if algorithm == "Standard Calculation":
         if operation == "Addition":
             result = num1 + num2
         elif operation == "Subtraction":
@@ -27,24 +27,34 @@ if st.button("Calculate"):
         elif operation == "Multiplication":
             result = num1 * num2
         elif operation == "Division":
-            if num2 != 0:
-                result = num1 / num2
-            else:
-                result = "Error: Division by zero"
-        elif operation == "Square Root":
-            result = math.sqrt(num1)
+            result = num1 / num2 if num2 != 0 else "Undefined"
         elif operation == "Power":
             result = math.pow(num1, num2)
-        elif operation == "Sine":
-            result = math.sin(math.radians(num1))
-        elif operation == "Cosine":
-            result = math.cos(math.radians(num1))
-        elif operation == "Tangent":
-            result = math.tan(math.radians(num1))
-        
-        st.success(f"Result: {result}")
-        
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
+        elif operation == "Square Root":
+            result = math.sqrt(num1) if num1 >= 0 else "Complex Number"
+    elif algorithm == "Algorithm X":
+        result = f"Algorithm X result for {operation}"
+    else:
+        result = f"Algorithm Y result for {operation}"
+
+    st.write("### Result:", result)
+
+# Custom styling
+st.markdown(
+    """
+    <style>
+    .stButton button {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 20px;
+        width: 100%;
+        height: 50px;
+        border-radius: 8px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 
 
