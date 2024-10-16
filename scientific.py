@@ -1,60 +1,59 @@
 import streamlit as st
 import math
 
-st.title("Interactive Scientific Calculator")
-st.write("Choose your desired operation, input values, and select an algorithm to perform calculations.")
+# Title of the application
+st.title("Scientific Calculator")
 
-# Dropdown for selecting an operation
-operation = st.selectbox("Select an Operation:", ("Addition", "Subtraction", "Multiplication", "Division", "Power", "Square Root"))
+# Dropdown for selecting the operation
+operation = st.selectbox("Select Operation:", 
+                          ["Addition", "Subtraction", "Multiplication", 
+                           "Division", "Square", "Square Root", 
+                           "Cosine", "Sine", "Tangent", "Algorithm"])
 
-# Dropdown for selecting an algorithm type (simple demonstration for different choices)
-algorithm = st.selectbox("Select Algorithm:", ("Standard Calculation", "Algorithm X", "Algorithm Y"))
+# Input fields for values
+value1 = st.number_input("Enter first value:", value=0.0)
+value2 = st.number_input("Enter second value (only for binary operations):", value=0.0)
 
-# Inputs for numbers based on the operation
-if operation in ["Addition", "Subtraction", "Multiplication", "Division", "Power"]:
-    num1 = st.number_input("Enter First Value:", value=0.0)
-    num2 = st.number_input("Enter Second Value:", value=0.0)
-else:  # Square root only requires one input
-    num1 = st.number_input("Enter Value:", value=0.0)
+# Button to calculate
+if st.button("Calculate", key="calculate", use_container_width=True):
+    result = None
+    if operation == "Addition":
+        result = value1 + value2
+    elif operation == "Subtraction":
+        result = value1 - value2
+    elif operation == "Multiplication":
+        result = value1 * value2
+    elif operation == "Division":
+        result = value1 / value2 if value2 != 0 else "Error: Division by Zero"
+    elif operation == "Square":
+        result = value1 ** 2
+    elif operation == "Square Root":
+        result = math.sqrt(value1) if value1 >= 0 else "Error: Negative Input"
+    elif operation == "Cosine":
+        result = math.cos(math.radians(value1))
+    elif operation == "Sine":
+        result = math.sin(math.radians(value1))
+    elif operation == "Tangent":
+        result = math.tan(math.radians(value1))
+    elif operation == "Algorithm":
+        # Placeholder for algorithmic calculation
+        result = "Algorithm applied (functionality to be defined)."
 
-# Perform calculation on button click
-if st.button("Calculate"):
-    if algorithm == "Standard Calculation":
-        if operation == "Addition":
-            result = num1 + num2
-        elif operation == "Subtraction":
-            result = num1 - num2
-        elif operation == "Multiplication":
-            result = num1 * num2
-        elif operation == "Division":
-            result = num1 / num2 if num2 != 0 else "Undefined"
-        elif operation == "Power":
-            result = math.pow(num1, num2)
-        elif operation == "Square Root":
-            result = math.sqrt(num1) if num1 >= 0 else "Complex Number"
-    elif algorithm == "Algorithm X":
-        result = f"Algorithm X result for {operation}"
-    else:
-        result = f"Algorithm Y result for {operation}"
+    st.success(f"Result: {result}")
 
-    st.write("### Result:", result)
+# Styling buttons
+st.markdown("""
+<style>
+div.stButton > button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
+""", unsafe_allow_html=True)
 
-# Custom styling
-st.markdown(
-    """
-    <style>
-    .stButton button {
-        background-color: #4CAF50;
-        color: white;
-        font-size: 20px;
-        width: 100%;
-        height: 50px;
-        border-radius: 8px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 
 
